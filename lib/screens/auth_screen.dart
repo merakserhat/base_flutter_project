@@ -1,5 +1,6 @@
 import 'package:fiverrr/services/auth_service.dart';
 import 'package:fiverrr/services/temp_service.dart';
+import 'package:fiverrr/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 children: [
                   isLoginLoading
                       ? const CircularProgressIndicator()
-                      : ElevatedButton(
+                      : AppButton(
                           onPressed: () async {
                             setState(() {
                               isLoginLoading = true;
@@ -58,11 +59,11 @@ class _AuthScreenState extends State<AuthScreen> {
                               isLoginLoading = false;
                             });
                           },
-                          child: Text("Login"),
+                          label: "Login",
                         ),
                   isRegisterLoading
                       ? const CircularProgressIndicator()
-                      : ElevatedButton(
+                      : AppButton(
                           onPressed: () async {
                             setState(() {
                               isRegisterLoading = true;
@@ -75,15 +76,15 @@ class _AuthScreenState extends State<AuthScreen> {
                               isRegisterLoading = false;
                             });
                           },
-                          child: Text("Register"),
+                          label: "Register",
                         ),
                 ],
               ),
-              ElevatedButton(
+              AppButton(
                 onPressed: () async {
                   await TempService.temp();
                 },
-                child: Text("See groceries"),
+                label: "See groceries",
               ),
             ],
           ),
