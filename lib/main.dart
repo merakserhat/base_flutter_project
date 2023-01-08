@@ -1,3 +1,4 @@
+import 'package:fiverrr/constants/app_theme.dart';
 import 'package:fiverrr/screens/auth_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppThemes.lightTheme,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
