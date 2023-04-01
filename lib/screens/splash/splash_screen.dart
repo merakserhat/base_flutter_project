@@ -1,7 +1,7 @@
-import 'package:fiverrr/constants/app_constants.dart';
-import 'package:fiverrr/screens/auth_screen.dart';
-import 'package:fiverrr/services/app_client.dart';
-import 'package:fiverrr/services/auth_service.dart';
+import 'package:baseproject/constants/app_constants.dart';
+import 'package:baseproject/screens/auth/auth_screen.dart';
+import 'package:baseproject/services/app_client.dart';
+import 'package:baseproject/services/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:shared_preferences/shared_preferences.dart';

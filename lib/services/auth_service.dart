@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:fiverrr/constants/app_constants.dart';
-import 'package:fiverrr/services/app_client.dart';
+import 'package:baseproject/constants/app_constants.dart';
+import 'package:baseproject/services/app_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {

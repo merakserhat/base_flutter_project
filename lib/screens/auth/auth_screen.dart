@@ -1,6 +1,6 @@
-import 'package:fiverrr/services/auth_service.dart';
-import 'package:fiverrr/services/temp_service.dart';
-import 'package:fiverrr/widgets/app_button.dart';
+import 'package:baseproject/services/auth_service.dart';
+import 'package:baseproject/services/temp_service.dart';
+import 'package:baseproject/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {

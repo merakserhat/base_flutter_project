@@ -1,5 +1,5 @@
-import 'package:fiverrr/constants/app_theme.dart';
-import 'package:fiverrr/screens/auth_screen.dart';
+import 'package:baseproject/constants/app_theme.dart';
+import 'package:baseproject/screens/auth/auth_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
