@@ -1,32 +1,36 @@
 class RegisterResponse {
-  late final bool isValid;
-  late final bool passwordError;
-  late final bool emailError;
-  late final bool serverError;
-  late final String? token;
+  late bool isValid;
+  String? passwordError;
+  String? emailError;
+  String? serverError;
+  String? usernameError;
+  String? token;
 
   RegisterResponse({
     this.isValid = true,
-    this.passwordError = false,
-    this.emailError = false,
-    this.serverError = false,
+    this.passwordError,
+    this.emailError,
+    this.serverError,
+    this.usernameError,
     this.token,
   });
 
   RegisterResponse.fromJson(Map<String, dynamic> json) {
     isValid = json["status"] == "success";
     if (json["error"] != null) {
-      passwordError = json['error']["password"] != null;
-      emailError = json['error']["email"] != null;
+      passwordError = json['error']["password"];
+      emailError = json['error']["email"];
+      usernameError = json['error']["username"];
     }
 
     token = json["token"];
 
     // if error is not based on password and email
-    if (!isValid && !passwordError && !emailError) {
-      serverError = true;
-    } else {
-      serverError = false;
+    if (!isValid &&
+        passwordError == null &&
+        emailError == null &&
+        usernameError == null) {
+      serverError = "Something went wrong";
     }
   }
 }
