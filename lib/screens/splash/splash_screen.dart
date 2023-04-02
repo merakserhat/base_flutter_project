@@ -1,7 +1,9 @@
+import 'dart:ui';
 import 'package:baseproject/constants/app_constants.dart';
 import 'package:baseproject/screens/auth/auth_screen.dart';
 import 'package:baseproject/services/app_client.dart';
-import 'package:baseproject/services/auth_service.dart';
+import 'package:baseproject/services/mock_auth.dart';
+import 'package:baseproject/widgets/app_button.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,52 +16,63 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  //means at leas show this screen 2 seconds when app is opening
-  bool showSplashScreen = true;
+  //means at least show this screen 2 seconds when app is opening
+  late bool tokenValidated = false;
+  bool minDurationPassed = false;
+
+  // TODO remove
+  String page = "Splash";
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        showSplashScreen = false;
-      });
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => initializeAuthentication());
+    Future.delayed(Duration(seconds: 1), () {
+      if (tokenValidated) {
+        // TODO: change page here
+        setState(() {
+          page = "Home";
+        });
+        return;
+      }
+
+      minDurationPassed = true;
     });
-    initializeAuthentication();
   }
 
   void initializeAuthentication() {
     SharedPreferences.getInstance().then((prefs) {
-      String? token = prefs.getString(AppConstants.token);
+      String? token = prefs.getString(AppConstants.tokenKey);
+
+      print(token);
 
       if (token == null || token.isEmpty) {
-        // Token yok ya da boş
-        Navigator.of(context).pushReplacement(
-            CupertinoPageRoute(builder: (_) => const AuthScreen()));
         return;
       }
 
-      AuthService.validateToken(token: token).then(
+      MockAuthService.validateToken(token: token).then(
         (validated) {
+          print(validated);
+
           if (validated) {
-            //TODO: burada home screen'a yönlendir. Validate ettik
             AppClient().token = token;
-          } else {
-            //Token validate değil
-            Navigator.of(context).pushReplacement(
-                CupertinoPageRoute(builder: (_) => const AuthScreen()));
+            if (minDurationPassed) {
+              // TODO: change here
+              setState(() {
+                page = "Home";
+              });
+              return;
+            }
+
+            setState(() {
+              tokenValidated = true;
+            });
           }
         },
-      ).catchError((error) {
-        //Token var ama validate ederken hata çıktı
-        Navigator.of(context).pushReplacement(
-            CupertinoPageRoute(builder: (_) => const AuthScreen()));
-      });
+      ).catchError((error) {});
     }).catchError(
       (error) {
-        // Token'ı ararken hata çıktı
-        Navigator.of(context).pushReplacement(
-            CupertinoPageRoute(builder: (_) => const AuthScreen()));
         return;
       },
     );
@@ -67,13 +80,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Center(
-          child: CircularProgressIndicator(),
-        )
-      ],
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            children: [
+              Text(page),
+              AppButton(
+                  label: "Login",
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                        CupertinoPageRoute(builder: (_) => AuthScreen()));
+                  })
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

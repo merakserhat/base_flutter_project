@@ -1,5 +1,7 @@
 import 'package:baseproject/constants/app_theme.dart';
 import 'package:baseproject/screens/auth/auth_screen.dart';
+import 'package:baseproject/screens/splash/splash_screen.dart';
+import 'package:baseproject/widgets/app_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,9 +35,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
+  void handleAuth() {
     Navigator.of(context)
         .push(CupertinoPageRoute(builder: (_) => const AuthScreen()));
+  }
+
+  void handleSplash() {
+    Navigator.of(context)
+        .push(CupertinoPageRoute(builder: (_) => const SplashScreen()));
   }
 
   @override
@@ -55,13 +62,16 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            AppButton(
+              label: "Splash",
+              onPressed: handleSplash,
+            ),
+            AppButton(
+              label: "Auth",
+              onPressed: handleAuth,
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

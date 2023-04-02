@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:baseproject/constants/app_constants.dart';
+import 'package:baseproject/services/app_client.dart';
 import 'package:dio/dio.dart';
 import 'package:baseproject/models/response/login_response.dart';
 import 'package:baseproject/models/response/register_response.dart';
@@ -17,6 +21,10 @@ class MockAuthService {
         'message': "Logged in successfully",
         "token": "bearer_token"
       };
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(AppConstants.tokenKey, "bearer_token");
+      AppClient().token = "bearer_token";
     } else {
       if (email == mockEmail) {
         responseData = {
@@ -41,7 +49,14 @@ class MockAuthService {
     await Future.delayed(const Duration(seconds: 1));
     Map<String, dynamic>? responseData;
     if (password == mockPassword && email == mockEmail) {
-      responseData = {'status': "success", 'message': "Logged in successfully"};
+      responseData = {
+        'status': "success",
+        'message': "Logged in successfully",
+        'token': "bearer_token"
+      };
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(AppConstants.tokenKey, "bearer_token");
+      AppClient().token = "bearer_token";
     } else {
       if (email == mockEmail) {
         responseData = {
@@ -57,6 +72,19 @@ class MockAuthService {
     }
 
     return RegisterResponse.fromJson(responseData);
+  }
+
+  static Future<bool> validateToken({required String token}) async {
+    try {
+      Random r = Random();
+
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      return r.nextBool();
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   // static Future<bool> forgotPassword({required String email}) async {
@@ -131,26 +159,6 @@ class MockAuthService {
   //   }
   // }
   //
-  // static Future<bool> validateToken({required String token}) async {
-  //   try {
-  //     var response = await AppClient().dio.post(
-  //         "${AppConstants.baseUrl}auth/verifyToken",
-  //         data: {'bearerToken': token});
-  //
-  //     print("Successfully validated token");
-  //     print(response.data);
-  //
-  //     if (response.data["user"] != null) {
-  //       UserModel user = UserModel.fromJson(response.data["user"]);
-  //       Program.program.user = user;
-  //     }
-  //
-  //     return true;
-  //   } catch (e) {
-  //     print(e);
-  //     return false;
-  //   }
-  // }
   //
   // static Future<bool> removeAccount() async {
   //   try {
